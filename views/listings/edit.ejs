@@ -1,0 +1,87 @@
+<% layout('./layouts/boilerplate') %>
+
+<div class="container mt-4">
+
+  <div class="row">
+    
+    <div class="col-md-8 offset-md-2">
+      
+      <h2 class="mb-4">Edit Listing</h2>
+
+      <form action="/listings/<%= data._id %>?_method=PUT" method="POST" novalidate class="needs-validation">
+
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input 
+            type="text" 
+            name="title" 
+            class="form-control"
+            value="<%= data.title %>"
+            required>
+            <div class="invalid-feedback">Enter valid title</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea 
+            name="description" 
+            class="form-control" 
+            rows="3"
+            required><%= data.description %> </textarea>
+            <div class="invalid-feedback">Enter valid description</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Image Link</label>
+          <input 
+            type="text" 
+            name="image" 
+            class="form-control"
+            value="<%= data.image.url %>">
+            <div class="invalid-feedback">Enter valid image link</div> 
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Price</label>
+            <input 
+              type="number" 
+              name="price" 
+              class="form-control"
+              value="<%= data.price %>"
+              required>
+              <div class="invalid-feedback">Enter valid price</div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Country</label>
+            <input 
+              type="text" 
+              name="country" 
+              class="form-control"
+              value="<%= data.country %>"
+              required>
+              <div class="invalid-feedback">Enter valid country</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Location</label>
+          <input 
+            type="text" 
+            name="location" 
+            class="form-control"
+            value="<%= data.location %>"
+            required>
+            <div class="invalid-feedback">Enter valid location</div>
+        </div>
+
+        <button class="btn btn-danger mb-3">Update</button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
