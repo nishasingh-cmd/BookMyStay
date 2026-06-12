@@ -5,8 +5,9 @@ const path = require("path");
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const ExpressError = require("./util/ExpressError.js");
-const listing = require("./routes/listing.js")
-const reviews = require("./routes/review.js")
+const listing = require("./routes/listing.js");
+const reviews = require("./routes/review.js");
+const session = require("express-session");
 
 app.set("view engine", "ejs");
 app.engine('ejs', engine);
@@ -15,6 +16,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
+
+const sessionOptions = {
+    secret : "mysecretcode",
+    resave : false,
+    saveUninitialized : true
+};
+app.use(session(sessionOptions));
 
 const mongo_url = "mongodb://127.0.0.1:27017/BookMyStay"
 main().then(() => {
