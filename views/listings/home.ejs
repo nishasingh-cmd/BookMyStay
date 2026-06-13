@@ -1,7 +1,53 @@
-<% layout('./layouts/boilerplate.ejs') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    body{
+        font-family: Arial, sans-serif;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #f7f7f7;
+    }
+
+    .container{
+        text-align: center;
+    }
+
+    h1{
+        color: #222;
+        margin-bottom: 1.5rem;
+    }
+
+    button{
+        background-color: #FF385C;
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    button:hover{
+        transform: scale(1.05);
+        background-color: #e63150;
+    }
+    </style>
+</head>
 <body>
-    <h1>Welcome to BookMyStay!</h1>
-    <form action="/listings">
-        <button>Explore</button>
-    </form>
+    <div class="container">
+        <h1>Welcome to BookMyStay</h1>
+        <form action="/listings">
+            <button>Explore Stays</button>
+        </form>
+    </div>
 </body>
+</html>
+
