@@ -2,6 +2,7 @@ const ExpressError = require("./util/ExpressError.js");
 const { listingSchema } = require('./listingSchema.js');
 const { reviewSchema } = require('./listingSchema.js');
 const Listings = require("./models/listings.js");
+const Review = require("./models/review.js");
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()){
@@ -45,6 +46,16 @@ module.exports.isOwner = async (req, res, next )=> {
     let data = await Listings.findById(id);
     if(!data.owner.equals(res.locals.currUser._id)) {
         req.flash("error", "You are the owner of this listing");
+        return res.redirect(`/listings/${id}`);
+    }
+    next();
+}
+
+module.exports.isCreatedBy = async (req, res, next )=> {
+    let {id, reviewId} = req.params;
+    let data = await Review.findById(reviewId);
+    if(!data.createdBy.equals(res.locals.currUser._id)) {
+        req.flash("error", "You did not write this review");
         return res.redirect(`/listings/${id}`);
     }
     next();

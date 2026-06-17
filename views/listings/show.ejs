@@ -67,18 +67,17 @@
     </div>
 
   </div>
+  
 
-
-  <hr class="my-2">
-
+  <% if(currUser) { %> 
+  <hr>
   <div class="row justify-content-center">
 
     <div class="col-md-8">
 
       <div class="card border-0 shadow-sm rounded-4 p-4">
-
+        
         <h3 class="mb-2 fw-bold">Add a Review</h3>
-
         <form 
           action="/listings/<%= data._id %>/review" 
           method="POST"
@@ -100,11 +99,9 @@
               class="form-range"
               min="1"
               max="5">
-
           </div>
 
           <div class="mb-4" >
-
             <label 
               for="comment" 
               class="form-label fw-semibold">
@@ -128,7 +125,6 @@
           <button class="btn btn-outline-danger px-4">
             Add Review
           </button>
-
         </form>
 
       </div>
@@ -136,6 +132,7 @@
     </div>
 
   </div>
+  <% } %>
 
 <!-- display review -->
 <hr class="my-4">
@@ -157,7 +154,7 @@
           <div class="card mb-3 border-0 shadow-sm rounded-4">
 
             <div class="card-body">
-              <p><b>Nisha Singh</b></p>
+              <p><b>@<%= review.createdBy.username %> </b></p>
               <% for(let i = 0; i < review.rating; i++) { %>
                 <i class="fa-solid fa-star"></i>
               <% } %>
