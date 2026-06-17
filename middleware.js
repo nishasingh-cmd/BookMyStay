@@ -1,3 +1,8 @@
+const ExpressError = require("./util/ExpressError.js");
+const { listingSchema } = require('./listingSchema.js');
+const { reviewSchema } = require('./listingSchema.js');
+const Listings = require("./models/listings.js");
+
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()){
         req.session.redirectUrl = req.originalUrl;
@@ -14,3 +19,33 @@ module.exports.redirectUrl = (req, res, next) => {
     next();
 }
 
+module.exports.validateReview = (req, res, next) => {
+    let { error } = reviewSchema.validate(req.body);
+    if(error) {
+        let msg = error.details.map((el) => el.message).join(",");
+        throw new ExpressError(400, msg);
+    } else {
+        next();
+    }
+};
+
+module.exports.validatelisting = (req, res, next) => {
+    let {error} = listingSchema.validate(req.body);
+    if(error) {
+        let msg = error.details.map(el => el.message).join(",");
+        throw new ExpressError(400, msg);
+    }
+    else {
+        next();
+    }
+}
+
+module.exports.isOwner = async (req, res, next )=> {
+    let {id} = req.params;
+    let data = await Listings.findById(id);
+    if(!data.owner.equals(res.locals.currUser._id)) {
+        req.flash("error", "You are the owner of this listing");
+        return res.redirect(`/listings/${id}`);
+    }
+    next();
+}

@@ -44,23 +44,20 @@
           </p>
 
           <div class="d-flex gap-3">
-
+            <% if(currUser && currUser._id.equals(data.owner._id)) { %>
             <a 
               href="/listings/<%= data._id %>/edit" 
               class="btn btn-danger px-4">
               Edit
             </a>
-
             <form 
               action="/listings/<%= data._id %>?_method=DELETE" 
               method="POST">
-
               <button class="btn btn-dark px-4">
                 Delete
               </button>
-
             </form>
-
+            <% } %>
           </div>
 
         </div>
