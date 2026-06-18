@@ -7,10 +7,14 @@ const {isLoggedIn, validatelisting, isOwner} = require("../middleware.js");
 //CREATE
 router.get('/new', isLoggedIn, listingController.renderNewForm);
 
-router.post('/', validatelisting, wrapAsync(listingController.createNewListing))
+router
+.route('/')
+//to put the data in db
+.post(isLoggedIn, validatelisting, wrapAsync(listingController.createNewListing))
+//to read all listing
+.get(wrapAsync(listingController.index));
 
 //READ
-router.get('/', wrapAsync(listingController.index));
 
 router.get('/:id', wrapAsync(listingController.showListing));
 
