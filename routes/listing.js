@@ -13,7 +13,7 @@ router.get('/new', isLoggedIn, listingController.renderNewForm);
 router
 .route('/')
 //to put the data in db
-.post(isLoggedIn,  upload.single('listing[image]'), wrapAsync(listingController.createNewListing))
+.post(isLoggedIn, upload.single('listing[image]'), wrapAsync(listingController.createNewListing))
 //to read all listing
 .get(wrapAsync(listingController.index));
 
@@ -24,7 +24,7 @@ router.get('/:id', wrapAsync(listingController.showListing));
 //UPDATE
 router.get('/:id/edit', isLoggedIn, isOwner, wrapAsync(listingController.renderEditForm));
 
-router.put('/:id', isOwner, wrapAsync(listingController.updateListing));
+router.put('/:id', isOwner, upload.single('image'), wrapAsync(listingController.updateListing));
 //DELETE
 router.delete('/:id', isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
 

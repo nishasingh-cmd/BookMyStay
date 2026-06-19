@@ -42,17 +42,15 @@ module.exports.renderEditForm = async(req, res) => {
 }
 module.exports.updateListing = async (req, res) => {
     const { id } = req.params;
-    const updatedData = {
-        ...req.body,
-        image: {
-            url: req.body.image,
-            filename: "listingimage"
-        }
-    };
-    await Listings.findByIdAndUpdate(id, updatedData);
+    let listing = await Listings.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
+    if (req.file) {
+        listing.image = { url: req.file.path, filename: req.file.filename,};
+        await listing.save();
+    }
     req.flash("success", "Listing updated successfully!");
     res.redirect(`/listings/${id}`);
-}
+};
+
 module.exports.destroyListing = async(req, res) => {
     const { id } = req.params;
     await Listings.findByIdAndDelete(id);
