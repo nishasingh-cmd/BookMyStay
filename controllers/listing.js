@@ -52,7 +52,7 @@ module.exports.renderEditForm = async(req, res) => {
 }
 module.exports.updateListing = async (req, res) => {
     const { id } = req.params;
-    let listing = await Listings.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
+    let listing = await Listings.findByIdAndUpdate(id, req.body , { returnDocument: "after" });
     if (req.file) {
         listing.image = { url: req.file.path, filename: req.file.filename,};
         await listing.save();
@@ -66,4 +66,21 @@ module.exports.destroyListing = async(req, res) => {
     await Listings.findByIdAndDelete(id);
     req.flash("success", "Listing deleted successfully!");
     res.redirect("/listings");
+}
+
+module.exports.searchListing = async(req, res) => {
+    let searchValue = req.query.q;
+    let allData = await Listings.find({
+    $or: [
+    { location: { $regex: searchValue, $options: "i" } },
+    { country: { $regex: searchValue, $options: "i" } },
+    { title: { $regex: searchValue, $options: "i" } }
+    ]
+});
+    if(allData.length === 0){
+    req.flash("error", `No match found for "${searchValue}"`);
+    return res.redirect("/listings");
+    }
+    res.render("./listings/allListing.ejs", {allData});
+    
 }

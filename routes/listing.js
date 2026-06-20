@@ -7,6 +7,9 @@ const multer  = require('multer')
 const {storage} = require("../cloudConfig.js")
 const upload = multer({ storage })
 
+//SEARCH
+router.get("/search", listingController.searchListing) 
+
 //CREATE
 router.get('/new', isLoggedIn, listingController.renderNewForm);
 
@@ -18,7 +21,6 @@ router
 .get(wrapAsync(listingController.index));
 
 //READ
-
 router.get('/:id', wrapAsync(listingController.showListing));
 
 //UPDATE
