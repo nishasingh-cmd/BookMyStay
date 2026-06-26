@@ -1,30 +1,64 @@
 <% layout('./layouts/boilerplate') %>
 
-<div class="container mt-3">
-  <div class="row">
+<style>
+  .listing-card {
+    border: none;
+    background: transparent;
+  }
 
-    <% for (let data of allData) { %>
+  .listing-img {
+    width: 100%;
+    height: 270px;
+    object-fit: cover;
+    border-radius: 18px;
+  }
 
-      <div class="col-md-4 mb-4">   
-        
-        <a href="/listings/<%= data._id %>" class="text-decoration-none text-dark">
-          
-          <div class="card h-100 position-relative overflow-hidden">
+  .listing-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #222;
+    margin-top: 10px;
+    margin-bottom: 2px;
+  }
 
-            <img 
-              src="<%= data.image.url %>" 
-              class="card-img-top"
-              style="height: 250px; object-fit: cover;"
-              alt="listing_image">
+  .listing-details {
+    color: #6a6a6a;
+    font-size: 0.95rem;
+  }
 
-            <div class="card-img-overlay overlay"></div>
+  .listing-link {
+    text-decoration: none;
+    color: inherit;
+  }
+</style>
 
-            
-            <div class="card-body">
-              <p class="card-text">
-                <b><%= data.title %></b> <br>
-                &#8377;<%= data.price.toLocaleString("en-IN") %> / night
-              </p>
+<div class="container mt-4">
+
+  <div class="row g-4">
+
+    <% for(let data of allData) { %>
+
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+
+        <a href="/listings/<%= data._id %>" class="listing-link">
+
+          <div class="listing-card">
+
+            <img
+              src="<%= data.image.url %>"
+              alt="listing_image"
+              class="listing-img">
+
+            <div class="listing-title">
+              <%= data.title %>
+            </div>
+
+            <div class="listing-details">
+              <%= data.location %>
+            </div>
+
+            <div class="listing-details">
+              ₹<%= data.price.toLocaleString("en-IN") %> / night
             </div>
 
           </div>
@@ -36,4 +70,5 @@
     <% } %>
 
   </div>
+
 </div>

@@ -30,4 +30,8 @@ router.put('/:id', isOwner, upload.single('image'), wrapAsync(listingController.
 //DELETE
 router.delete('/:id', isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
 
+//RESERVE
+router.get("/:id/reservation", isLoggedIn, wrapAsync(listingController.renderReservationForm));
+router.post("/:id/reservation", isLoggedIn, wrapAsync(listingController.reserveListing));
+
 module.exports = router;

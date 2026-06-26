@@ -82,5 +82,16 @@ module.exports.searchListing = async(req, res) => {
     return res.redirect("/listings");
     }
     res.render("./listings/allListing.ejs", {allData});
-    
+}
+
+module.exports.renderReservationForm = async (req, res) => {
+    const { id } = req.params;
+    const listing = await Listings.findById(id);
+    res.render("./listings/reservation.ejs", { listing });
+}
+
+module.exports.reserveListing = async (req, res) => {
+    const { id } = req.params;
+    req.flash("success", "🎉 Your stay has been reserved successfully!");
+    res.redirect(`/listings/${id}`);
 }

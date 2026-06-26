@@ -1,0 +1,148 @@
+<% layout("./layouts/boilerplate") %>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow rounded-4">
+                <div class="card-body p-5">
+                    <h2 class="fw-bold mb-4">
+                        Reserve Your Stay
+                    </h2>
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-4">
+                            <img
+                                src="<%= listing.image.url %>"
+                                class="img-fluid rounded-4"
+                                style="height:180px;width:100%;object-fit:cover;">
+                        </div>
+                        <div class="col-md-8">
+                            <h3 class="fw-bold">
+                                <%= listing.title %>
+                            </h3>
+
+                            <p class="text-muted mb-2">
+                                <%= listing.location %>,
+                                <%= listing.country %>
+                            </p>
+
+                            <h4 class="text-danger">
+                                ₹<span id="price"><%= listing.price %></span>
+                                <small class="text-muted fs-6">/ night</small>
+                            </h4>
+
+                        </div>
+                    </div>
+                    <hr>
+                    <form
+                        action="/listings/<%= listing._id %>/reservation"
+                        method="POST">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">
+                                    Check-In
+                                </label>
+                                <input
+                                    type="date"
+                                    id="checkIn"
+                                    name="checkIn"
+                                    class="form-control"
+                                    required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">
+                                    Check-Out
+                                </label>
+                                <input
+                                    type="date"
+                                    id="checkOut"
+                                    name="checkOut"
+                                    class="form-control"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Guests
+                            </label>
+                            <div class="d-flex align-items-center">
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary"
+                                    id="minus">
+                                    -
+                                </button>
+                                <input
+                                    type="number"
+                                    id="guests"
+                                    name="guests"
+                                    value="1"
+                                    min="1"
+                                    max="10"
+                                    class="form-control text-center mx-2"
+                                    style="width:90px;"
+                                    readonly>
+                                <button
+                                    type="button"
+                                    class="btn btn-outline-secondary"
+                                    id="plus">
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="mb-2 d-flex justify-content-between">
+                            <span>Total Nights</span>
+                            <span id="nights">0</span>
+                        </div>
+                        <div class="mb-4 d-flex justify-content-between">
+                            <h5>Total Amount</h5>
+                            <h5 class="text-danger">
+                                ₹<span id="totalPrice">0</span>
+                            </h5>
+                        </div>
+                        <button class="btn btn-danger w-100 py-2 fw-bold">Reserve Now</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const price = Number(document.getElementById("price").innerText);
+const checkIn = document.getElementById("checkIn");
+const checkOut = document.getElementById("checkOut");
+const nights = document.getElementById("nights");
+const totalPrice = document.getElementById("totalPrice");
+
+function calculateTotal(){
+    if(checkIn.value && checkOut.value){
+        let start = new Date(checkIn.value);
+        let end = new Date(checkOut.value);
+        if(end <= start){
+            alert("Check-Out date must be after Check-In.");
+            checkOut.value="";
+            nights.innerText = 0;
+            totalPrice.innerText = 0;
+            return;
+        }
+        let diff = end-start;
+        let totalDays = diff/(1000*60*60*24);
+        nights.innerText = totalDays;
+        totalPrice.innerText = (totalDays*price).toLocaleString("en-IN");
+    }
+}
+checkIn.addEventListener("change",calculateTotal);
+checkOut.addEventListener("change",calculateTotal);
+const guestInput = document.getElementById("guests");
+document.getElementById("plus").onclick=()=>{
+    if(Number(guestInput.value)<10)
+        guestInput.value++;
+}
+document.getElementById("minus").onclick=()=>{
+    if(Number(guestInput.value)>1)
+        guestInput.value--;
+}
+</script>
